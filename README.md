@@ -64,6 +64,14 @@ class ImageToPatches(nn.Module):
         x = x.reshape(B, H//P * W//P, C*P*P)    # [B, H//P * W//P, C*P*P]  
                                                 # [B, n_tokens, n_pixels]
         return x
+
+class PerPatchMLP(nn.Module):
+    def __init__(self, n_pixels, n_channel):
+        super().__init__()
+        self.mlp = nn.Linear(n_pixels, n_channel)
+
+    def forward(self, x):      
+        return self.mlp(x)  # [B, n_tokens, n_channel]    
 ```
 
 ## Token-mixing MLP
