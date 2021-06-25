@@ -23,7 +23,7 @@ python train.py
 
 ## MLP-Mixer Architecture Overview
 The whole MLP-Mixer expects a input tensor of shape `[B,C,H,W]` where `B` is the batch size, `C` is the number of channels of the input image, and `H` and `W` are the height and width. `ImageToPatch` divides the input image tensors into patches of size `P`. `PerPatchMLP` takes as input patches of pixels and projects them to channel dimension resulting to tensor of shape `[B, n_tokens, n_channel]`. `MixerStack` is composed of `N` layers of `MixerLayers` composed of `Token-mixing MLP` and `Channel-mixing MLP` for mixing the feautures along the token and channel dimension respectively. 
-```
+```python
 class MLP_Mixer(nn.Module):
     def __init__(self, n_layers, n_channel, n_hidden, n_output, image_size, patch_size, n_image_channel):
         super().__init__()
@@ -50,7 +50,7 @@ class MLP_Mixer(nn.Module):
 ## Image to Patches and PerPatchMLP
 
 `PerPatchMLP` projects pixels to channel dimension. It takes as input a tensor of shape `[B, n_tokens, n_pixels]` and projects to `[B, n_tokens, n_channel]`.
-```
+```python
 class ImageToPatches(nn.Module):
     def __init__(self, patch_size):
         super().__init__()
@@ -68,7 +68,7 @@ class ImageToPatches(nn.Module):
 
 ## Token-mixing MLP
 `Token-mixing MLP` projects tokens to hidden dimension and back to token dimension. Therefore it expects an input of shape `[B, n_channel, n_tokens]`, which is done by swapping the axes.
-```
+```python
 class TokenMixingMLP(nn.Module):
     def __init__(self, n_tokens, n_channel, n_hidden):
         super().__init__()
@@ -89,7 +89,7 @@ class TokenMixingMLP(nn.Module):
 
 ## Channel-mixing MLP 
 `Channel-mixing MLP` projects channels to hidden dimension and back to channel dimension. Since the input tensor has shape `[B, n_tokens, n_channel]`, there is no need to swap axes. 
-```
+```python
 class ChannelMixingMLP(nn.Module):
     def __init__(self, n_tokens, n_channel, n_hidden):
         super().__init__()
@@ -108,7 +108,7 @@ class ChannelMixingMLP(nn.Module):
 
 ## OutputMLP
 `OutputMLP` is the usual fully-connected for outputs. The only difference is it takes as input features averaged along the token dimension.
-```
+```python
 class OutputMLP(nn.Module):
     def __init__(self, n_tokens, n_channel, n_output):
         super().__init__()
